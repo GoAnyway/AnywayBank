@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnywayBank", "AnywayBank\An
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EACAE4E5-854D-4567-A66E-995E8F13F577}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{B53F469B-3D14-40B6-ADF7-6D1DAB556FFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +19,17 @@ Global
 		{2388C896-67A6-40CB-B684-F24995437F47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2388C896-67A6-40CB-B684-F24995437F47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2388C896-67A6-40CB-B684-F24995437F47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B53F469B-3D14-40B6-ADF7-6D1DAB556FFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B53F469B-3D14-40B6-ADF7-6D1DAB556FFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B53F469B-3D14-40B6-ADF7-6D1DAB556FFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B53F469B-3D14-40B6-ADF7-6D1DAB556FFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2388C896-67A6-40CB-B684-F24995437F47} = {EACAE4E5-854D-4567-A66E-995E8F13F577}
+		{B53F469B-3D14-40B6-ADF7-6D1DAB556FFA} = {EACAE4E5-854D-4567-A66E-995E8F13F577}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6FA6553B-79D7-4A2F-9AA2-DB06C9C153CD}
