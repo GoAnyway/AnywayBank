@@ -24,6 +24,7 @@ namespace AnywayBank
                 .AddRepositories()
                 .AddUnitsOfWork()
                 .AddAutoMapper()
+                .AddCoreServices()
                 .AddControllers();
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
