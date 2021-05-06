@@ -8,7 +8,7 @@ namespace AnywayBank.Utils.Extensions.ServiceCollectionExtensions
     public static class DbContextsServiceCollectionExtensions
     {
         public static IServiceCollection AddDbContexts(this IServiceCollection services, IConfiguration configuration) =>
-            services.AddDbContext<BankDbContext>(builder => 
+            services.AddDbContext<AnywayBankDbContext>(builder => 
                 builder
                     .UseLazyLoadingProxies()
                     .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));

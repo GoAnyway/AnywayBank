@@ -10,10 +10,10 @@ using Models.UtilModels;
 
 namespace DataManager.BaseRepositories
 {
-    public abstract class BaseRepository<TEntity> : BaseRepository<TEntity, Guid, BankDbContext>
+    public abstract class BaseRepository<TEntity> : BaseRepository<TEntity, Guid, AnywayBankDbContext>
         where TEntity : class, IEntity<Guid>, new()
     {
-        protected BaseRepository(BankDbContext context)
+        protected BaseRepository(AnywayBankDbContext context)
             : base(context)
         {
         }

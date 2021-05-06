@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="BaseEntities\" />
     <Folder Include="Entities\Identity\" />
-    <Folder Include="DbContexts\" />
   </ItemGroup>
 
   <ItemGroup>

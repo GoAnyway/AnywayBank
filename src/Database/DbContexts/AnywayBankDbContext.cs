@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Database.DbContexts
 {
-    public sealed class BankDbContext : DbContext
+    public sealed class AnywayBankDbContext : DbContext
     {
-        public BankDbContext(DbContextOptions<BankDbContext> options)
+        public AnywayBankDbContext(DbContextOptions<AnywayBankDbContext> options)
             : base(options)
         {
         }
