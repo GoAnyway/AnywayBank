@@ -10,7 +10,8 @@ namespace AnywayBank.Utils.Extensions.ServiceCollectionExtensions
             services.AddScoped<IConfigurationProvider>(_ =>
                     new MapperConfiguration(cfg => cfg.AddProfiles(new Profile[]
                     {
-                        new IdentityMapperProfile()
+                        new IdentityMapperProfile(),
+                        new BankMapperProfile()
                     })))
                 .AddScoped<IMapper, Mapper>();
     }
