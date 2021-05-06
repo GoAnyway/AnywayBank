@@ -11,6 +11,6 @@ namespace Database.Entities.Identity
         public DateTime RegistrationTime { get; set; }
 
         [ForeignKey(nameof(Person))] public Guid? PersonId { get; set; }
-        public Person Person { get; set; }
+        public virtual Person Person { get; set; }
     }
 }
