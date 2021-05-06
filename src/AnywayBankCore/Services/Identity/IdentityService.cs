@@ -20,6 +20,13 @@ namespace AnywayBankCore.Services.Identity
         {
             var result = new ResultModel<PersonModel>(false);
 
+            var isUsernameUnique = await UnitOfWork.UserRepository.AnyAsync(_ => _.Username == model.Username);
+            if (!isUsernameUnique)
+            {
+                result.Error = new ErrorModel(2002, "User with similar Username already exists.");
+                return result;
+            }
+
             var user = Mapper.Map<User>(model);
             user.RegistrationTime = DateTime.UtcNow;
             var userCreationResult = UnitOfWork.UserRepository.Create(user);
