@@ -15,6 +15,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Database\Database.csproj" />
+	  <ProjectReference Include="..\DataManager\DataManager.csproj" />
 	</ItemGroup>
 
 </Project>

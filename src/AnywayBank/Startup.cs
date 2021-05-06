@@ -21,6 +21,7 @@ namespace AnywayBank
         public void ConfigureServices(IServiceCollection services) =>
             services
                 .AddDbContexts(Configuration)
+                .AddRepositories()
                 .AddControllers();
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
