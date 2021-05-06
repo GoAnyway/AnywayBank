@@ -12,12 +12,14 @@ namespace AnywayBank.Utils.MapperProfiles
                 .ForMember(_ => _.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(_ => _.Username, opt => opt.MapFrom(s => s.Username))
                 .ForMember(_ => _.Password, opt => opt.MapFrom(s => s.Password))
+                .ForMember(_ => _.Email, opt => opt.MapFrom(s => s.Email))
                 .ForMember(_ => _.RegistrationTime, opt => opt.MapFrom(s => s.RegistrationTime))
                 .ForMember(_ => _.Person, opt => opt.MapFrom(s => s.Person));
             CreateMap<UserModel, User>()
                 .ForMember(_ => _.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(_ => _.Username, opt => opt.MapFrom(s => s.Username))
                 .ForMember(_ => _.Password, opt => opt.MapFrom(s => s.Password))
+                .ForMember(_ => _.Email, opt => opt.MapFrom(s => s.Email))
                 .ForMember(_ => _.RegistrationTime, opt => opt.MapFrom(s => s.RegistrationTime))
                 .ForMember(_ => _.PersonId, opt =>
                 {
