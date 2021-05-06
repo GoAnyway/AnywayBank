@@ -1,5 +1,6 @@
 ﻿using System;
 using Database.BaseEntities;
+using Database.Entities.Core.Bank;
 
 namespace Database.Entities.Identity
 {
@@ -10,5 +11,6 @@ namespace Database.Entities.Identity
         public DateTime Birthday { get; set; }
 
         public virtual User User { get; set; }
+        public virtual BankProfile BankProfile { get; set; }
     }
 }
