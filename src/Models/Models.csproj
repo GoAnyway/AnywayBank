@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="EntityModels\Core\Enums\" />
     <Folder Include="UtilModels\" />
   </ItemGroup>
 
