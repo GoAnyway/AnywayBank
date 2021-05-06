@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AnywayBankCore.BaseServices;
 using AutoMapper;
 using Database.Entities.Identity;
@@ -20,6 +21,7 @@ namespace AnywayBankCore.Services.Identity
             var result = new ResultModel<PersonModel>(false);
 
             var user = Mapper.Map<User>(model);
+            user.RegistrationTime = DateTime.UtcNow;
             var userCreationResult = UnitOfWork.UserRepository.Create(user);
             if (!userCreationResult.Success)
             {
