@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Folder Include="BaseUnitsOfWork\" />
+    <Folder Include="Repositories\PersonRepositories\" />
   </ItemGroup>
 
 </Project>
