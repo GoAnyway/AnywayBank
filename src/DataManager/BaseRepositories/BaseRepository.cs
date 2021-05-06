@@ -4,16 +4,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Database.BaseEntities;
+using Database.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Models.UtilModels;
 
 namespace DataManager.BaseRepositories
 {
-    public abstract class BaseRepository<TEntity, TDbContext> : BaseRepository<TEntity, Guid, TDbContext>
+    public abstract class BaseRepository<TEntity> : BaseRepository<TEntity, Guid, BankDbContext>
         where TEntity : class, IEntity<Guid>, new()
-        where TDbContext : DbContext
     {
-        protected BaseRepository(TDbContext context)
+        protected BaseRepository(BankDbContext context)
             : base(context)
         {
         }
