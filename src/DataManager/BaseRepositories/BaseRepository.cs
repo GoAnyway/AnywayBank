@@ -33,16 +33,32 @@ namespace DataManager.BaseRepositories
             RepoDbSet = Context.Set<TEntity>();
         }
 
-        public virtual void Add(TEntity entity) => RepoDbSet.Add(entity);
-
-        public virtual async Task<ResultModel<TEntity>> Update(TEntity entity)
+        public virtual ResultModel<TEntity> Create(TEntity entity)
         {
             var result = new ResultModel<TEntity>(true);
 
-            var neededEntity = await GetAsync(_ => _.Id.Equals(entity.Id));
+            var alreadyCreated = Any(_ => _.Id.Equals(entity.Id));
+            if (!alreadyCreated)
+            {
+                result.Data = RepoDbSet.Add(entity).Entity;
+            }
+            else
+            {
+                result.Success = false;
+                result.Error = new ErrorModel(1001, "Entity already exists.");
+            }
+
+            return result;
+        }
+
+        public virtual ResultModel<TEntity> Update(TEntity entity)
+        {
+            var result = new ResultModel<TEntity>(true);
+
+            var neededEntity = Get(_ => _.Id.Equals(entity.Id));
             if (neededEntity.Success)
             {
-                RepoDbSet.Update(neededEntity.Data);
+                result.Data = RepoDbSet.Update(neededEntity.Data).Entity;
             }
             else
             {
@@ -53,11 +69,11 @@ namespace DataManager.BaseRepositories
             return result;
         }
 
-        public virtual async Task<ResultModel<object>> Remove(TEntity entity)
+        public virtual ResultModel<object> Remove(TEntity entity)
         {
             var result = new ResultModel<object>(true);
 
-            var entityToDelete = await GetAsync(_ => _.Id.Equals(entity.Id));
+            var entityToDelete = Get(_ => _.Id.Equals(entity.Id));
             if (entityToDelete.Success)
             {
                 RepoDbSet.Remove(entityToDelete.Data);
@@ -70,6 +86,35 @@ namespace DataManager.BaseRepositories
 
             return result;
         }
+
+        public virtual IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate, bool asNoTracking = true) =>
+            asNoTracking
+                ? QuerySet(predicate).AsNoTracking().ToList()
+                : QuerySet(predicate).ToList();
+
+        public virtual ResultModel<TEntity> Get(Expression<Func<TEntity, bool>> predicate, bool asNoTracking = true)
+        {
+            var result = new ResultModel<TEntity>(true);
+
+            var entity = asNoTracking
+                ? RepoDbSet.AsNoTracking().FirstOrDefault(predicate)
+                : RepoDbSet.FirstOrDefault(predicate);
+
+            if (entity != null)
+            {
+                result.Data = entity;
+            }
+            else
+            {
+                result.Success = false;
+                result.Error = new ErrorModel(1001, "Entity not found.");
+            }
+
+            return result;
+        }
+
+        public virtual bool Any(Expression<Func<TEntity, bool>> predicate) =>
+            RepoDbSet.Any(predicate);
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate,
             bool asNoTracking = true) =>

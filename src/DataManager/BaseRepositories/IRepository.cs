@@ -8,7 +8,8 @@ namespace DataManager.BaseRepositories
     {
     }
 
-    public interface IRepository<TEntity, TKey> : IRepositoryCommon<TEntity, TKey>, IRepositoryAsync<TEntity, TKey>
+    public interface IRepository<TEntity, TKey> : IRepositoryCommon<TEntity, TKey>,
+        IRepositorySync<TEntity, TKey>, IRepositoryAsync<TEntity, TKey>
         where TEntity : class, IEntity<TKey>, new()
         where TKey : struct, IEquatable<TKey>
     {
