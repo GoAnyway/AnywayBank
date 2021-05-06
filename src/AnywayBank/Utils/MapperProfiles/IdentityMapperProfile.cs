@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Database.Entities.Identity;
-using Models.EntityModels.Identity;
+using Models.InternalModels.EntityModels.Identity;
 
 namespace AnywayBank.Utils.MapperProfiles
 {

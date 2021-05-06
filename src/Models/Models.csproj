@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="EntityModels\Core\Enums\" />
-    <Folder Include="UtilModels\" />
+    <Folder Include="APIModels\Identity\" />
   </ItemGroup>
 
 </Project>

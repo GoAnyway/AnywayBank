@@ -1,4 +1,4 @@
-﻿namespace Models.EntityModels.Core.Enums
+﻿namespace Models.InternalModels.EntityModels.Core.Enums
 {
     public enum BankAccountType
     {

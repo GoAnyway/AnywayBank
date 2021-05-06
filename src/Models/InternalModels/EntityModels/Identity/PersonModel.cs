@@ -1,8 +1,8 @@
 ﻿using System;
-using Models.BaseEntityModels;
-using Models.EntityModels.Core;
+using Models.InternalModels.BaseEntityModels;
+using Models.InternalModels.EntityModels.Core;
 
-namespace Models.EntityModels.Identity
+namespace Models.InternalModels.EntityModels.Identity
 {
     public class PersonModel : BaseEntityModel
     {

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Models.EntityModels.Identity;
+using Models.InternalModels.EntityModels.Identity;
 using Models.UtilModels;
 
 namespace AnywayBankCore.Services.Identity

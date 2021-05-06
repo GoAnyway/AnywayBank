@@ -1,8 +1,8 @@
 ﻿using System;
-using Models.BaseEntityModels;
-using Models.EntityModels.Core.Enums;
+using Models.InternalModels.BaseEntityModels;
+using Models.InternalModels.EntityModels.Core.Enums;
 
-namespace Models.EntityModels.Core
+namespace Models.InternalModels.EntityModels.Core
 {
     public class BankAccountModel : BaseEntityModel
     {

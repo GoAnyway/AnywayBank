@@ -1,7 +1,7 @@
 ﻿using System;
-using Models.BaseEntityModels;
+using Models.InternalModels.BaseEntityModels;
 
-namespace Models.EntityModels.Identity
+namespace Models.InternalModels.EntityModels.Identity
 {
     public class UserModel : BaseEntityModel
     {

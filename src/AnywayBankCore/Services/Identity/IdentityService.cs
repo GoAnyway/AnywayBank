@@ -4,7 +4,7 @@ using AnywayBankCore.BaseServices;
 using AutoMapper;
 using Database.Entities.Identity;
 using DataManager.UnitsOfWork.AnywayBankUnitsOfWork;
-using Models.EntityModels.Identity;
+using Models.InternalModels.EntityModels.Identity;
 using Models.UtilModels;
 
 namespace AnywayBankCore.Services.Identity

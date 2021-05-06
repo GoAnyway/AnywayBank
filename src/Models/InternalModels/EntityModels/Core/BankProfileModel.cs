@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Models.BaseEntityModels;
-using Models.EntityModels.Identity;
+using Models.InternalModels.BaseEntityModels;
+using Models.InternalModels.EntityModels.Identity;
 
-namespace Models.EntityModels.Core
+namespace Models.InternalModels.EntityModels.Core
 {
     public class BankProfileModel : BaseEntityModel
     {
