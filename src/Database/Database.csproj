@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="BaseEntities\" />
+    <Folder Include="Entities\Identity\" />
   </ItemGroup>
 
 </Project>
