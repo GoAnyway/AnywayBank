@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using AnywayBankCore.Cores;
+using AnywayBankCore.Services.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models.APIModels.Identity;
 
@@ -9,11 +9,11 @@ namespace AnywayBank.Controllers
     [ApiController]
     public class IdentityController : ControllerBase
     {
-        private readonly ICore _core;
+        private readonly IIdentityService _identityService;
 
-        public IdentityController(ICore core)
+        public IdentityController(IIdentityService identityService)
         {
-            _core = core;
+            _identityService = identityService;
         }
 
         [HttpPost]
@@ -22,7 +22,7 @@ namespace AnywayBank.Controllers
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
             
-            var result = await _core.IdentityService.RegisterAsync(model);
+            var result = await _identityService.RegisterAsync(model);
             
             return result.Success
                 ? new ObjectResult(result.Data)
@@ -35,11 +35,11 @@ namespace AnywayBank.Controllers
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-            var result = await _core.IdentityService.AuthorizeAsync(model);
+            var result = await _identityService.AuthorizeAsync(model);
 
             return result.Success
                 ? new ObjectResult(result.Data)
-                : StatusCode(result.Error.Code, result.Error.Message);
+                : BadRequest(result.Error);
         }
     }
 }
