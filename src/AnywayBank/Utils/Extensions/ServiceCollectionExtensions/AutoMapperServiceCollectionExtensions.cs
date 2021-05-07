@@ -1,5 +1,6 @@
 ﻿using AnywayBank.Utils.MapperProfiles;
 using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AnywayBank.Utils.Extensions.ServiceCollectionExtensions
@@ -8,11 +9,15 @@ namespace AnywayBank.Utils.Extensions.ServiceCollectionExtensions
     {
         public static IServiceCollection AddAutoMapper(this IServiceCollection services) =>
             services.AddScoped<IConfigurationProvider>(_ =>
-                    new MapperConfiguration(cfg => cfg.AddProfiles(new Profile[]
+                    new MapperConfiguration(cfg =>
                     {
-                        new IdentityMapperProfile(),
-                        new BankMapperProfile()
-                    })))
+                        cfg.AddExpressionMapping();
+                        cfg.AddProfiles(new Profile[]
+                        {
+                            new IdentityMapperProfile(),
+                            new BankMapperProfile()
+                        });
+                    }))
                 .AddScoped<IMapper, Mapper>();
     }
 }
