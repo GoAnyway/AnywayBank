@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Database.Entities.Identity;
+using Models.APIModels.Identity;
 using Models.InternalModels.EntityModels.Identity;
 
 namespace AnywayBank.Utils.MapperProfiles
@@ -42,6 +44,12 @@ namespace AnywayBank.Utils.MapperProfiles
                 .ForMember(_ => _.Birthday, opt => opt.MapFrom(s => s.Birthday))
                 .ForMember(_ => _.User, opt => opt.MapFrom(s => s.User))
                 .ForMember(_ => _.BankProfile, opt => opt.MapFrom(s => s.BankProfile));
+
+            CreateMap<RegistrationModel, UserModel>()
+                .ForMember(_ => _.Username, opt => opt.MapFrom(s => s.Username))
+                .ForMember(_ => _.Password, opt => opt.MapFrom(s => s.Password))
+                .ForMember(_ => _.Email, opt => opt.MapFrom(s => s.Email))
+                .ForMember(_ => _.RegistrationTime, opt => opt.MapFrom(s => DateTime.UtcNow));
         }
     }
 }

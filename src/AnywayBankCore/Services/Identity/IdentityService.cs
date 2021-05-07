@@ -1,9 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AnywayBankCore.BaseServices;
 using AutoMapper;
-using Database.Entities.Identity;
 using DataManager.UnitsOfWork.AnywayBankUnitsOfWork;
+using Models.APIModels.Identity;
 using Models.InternalModels.EntityModels.Identity;
 using Models.UtilModels;
 
@@ -16,7 +15,7 @@ namespace AnywayBankCore.Services.Identity
         {
         }
 
-        public async Task<ResultModel<PersonModel>> RegisterAsync(UserModel model)
+        public async Task<ResultModel<PersonModel>> RegisterAsync(RegistrationModel model)
         {
             var result = new ResultModel<PersonModel>(false);
 
@@ -27,8 +26,7 @@ namespace AnywayBankCore.Services.Identity
                 return result;
             }
 
-            var user = Mapper.Map<User>(model);
-            user.RegistrationTime = DateTime.UtcNow;
+            var user = Mapper.Map<UserModel>(model);
             var userCreationResult = UnitOfWork.UserRepository.Create(user);
             if (!userCreationResult.Success)
             {
@@ -36,7 +34,7 @@ namespace AnywayBankCore.Services.Identity
                 return result;
             }
 
-            var person = new Person { User = user };
+            var person = new PersonModel { User = user };
             var personCreationResult = UnitOfWork.PersonRepository.Create(person);
             if (!personCreationResult.Success)
             {
@@ -44,20 +42,28 @@ namespace AnywayBankCore.Services.Identity
                 return result;
             }
 
-            userCreationResult.Data.PersonId = personCreationResult.Data.Id;
-            UnitOfWork.UserRepository.Update(userCreationResult.Data);
+            userCreationResult.Data.Person = personCreationResult.Data;
+            var userUpdateResult = UnitOfWork.UserRepository.Update(userCreationResult.Data);
+            if(!userUpdateResult.Success)
+            {
+                result.Error = userUpdateResult.Error;
+                return result;
+            }
             await UnitOfWork.SaveChangesAsync();
+
+            personCreationResult.Data.User = userUpdateResult.Data;
             result.Success = true;
-            result.Data = Mapper.Map<PersonModel>(personCreationResult.Data);
+            result.Data = personCreationResult.Data;
 
             return result;
         }
 
-        public async Task<ResultModel<PersonModel>> AuthorizeAsync(UserModel model)
+        public async Task<ResultModel<PersonModel>> AuthorizeAsync(AuthorizationModel model)
         {
             var result = new ResultModel<PersonModel>(true);
 
-            var userSearchResult = await UnitOfWork.UserRepository.GetAsync(_ => _.Id == model.Id);
+            var userSearchResult = await UnitOfWork.UserRepository.GetAsync(_ => _.Username == model.Username && 
+                                                                                 _.Password == model.Password);
             if (userSearchResult.Success)
             {
                 result.Data = Mapper.Map<PersonModel>(userSearchResult.Data.Person);
