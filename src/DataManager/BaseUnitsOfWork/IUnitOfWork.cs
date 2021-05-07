@@ -4,7 +4,11 @@ namespace DataManager.BaseUnitsOfWork
 {
     public interface IUnitOfWork
     {
-        int SaveChanges();
-        Task<int> SaveChangesAsync();
+        void BeginTransaction();
+        Task BeginTransactionAsync();
+        int Commit();
+        Task<int> CommitAsync();
+        void Rollback();
+        Task RollbackAsync();
     }
 }
