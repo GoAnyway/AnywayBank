@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DataManager.BaseUnitsOfWork;
 using DataManager.UnitsOfWork.AnywayBankUnitsOfWork;
 
 namespace AnywayBankCore.BaseServices
@@ -12,6 +13,7 @@ namespace AnywayBankCore.BaseServices
     }
 
     public abstract class BaseService<TUnitOfWork>
+        where TUnitOfWork : IUnitOfWork
     {
         protected readonly TUnitOfWork UnitOfWork;
         protected readonly IMapper Mapper;
