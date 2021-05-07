@@ -10,7 +10,7 @@ namespace DataManager.BaseRepositories
 {
     public interface IRepositoryAsync<TEntity, TModel, TKey>
         where TEntity : class, IEntity<TKey>, new()
-        where TModel : IEntityModel<TKey>
+        where TModel : class, IEntityModel<TKey>, new()
         where TKey : struct, IEquatable<TKey>
     {
         Task<IEnumerable<TModel>> GetAllAsync(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true);

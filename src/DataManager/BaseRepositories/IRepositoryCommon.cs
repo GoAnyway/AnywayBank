@@ -7,7 +7,7 @@ namespace DataManager.BaseRepositories
 {
     public interface IRepositoryCommon<TEntity, TModel, TKey>
         where TEntity : class, IEntity<TKey>, new()
-        where TModel : IEntityModel<TKey>
+        where TModel : class, IEntityModel<TKey>, new()
         where TKey : struct, IEquatable<TKey>
     {
         ResultModel<TModel> Create(TModel model);

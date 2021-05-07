@@ -15,7 +15,7 @@ namespace DataManager.BaseRepositories
 {
     public abstract class BaseRepository<TEntity, TModel> : BaseRepository<TEntity, TModel, Guid, AnywayBankDbContext>
         where TEntity : class, IEntity<Guid>, new()
-        where TModel : IEntityModel<Guid>
+        where TModel : class, IEntityModel<Guid>, new()
     {
         protected BaseRepository(AnywayBankDbContext context, IMapper mapper)
             : base(context, mapper)
@@ -25,7 +25,7 @@ namespace DataManager.BaseRepositories
 
     public abstract class BaseRepository<TEntity, TModel, TKey, TDbContext> : IRepository<TEntity, TModel, TKey>
         where TEntity : class, IEntity<TKey>, new()
-        where TModel : IEntityModel<TKey>
+        where TModel : class, IEntityModel<TKey>, new()
         where TKey : struct, IEquatable<TKey>
         where TDbContext : DbContext
     {
