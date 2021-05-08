@@ -7,15 +7,15 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Database.BaseEntities;
 using Database.DbContexts;
+using DataManager.BaseUnitsOfWork;
 using Microsoft.EntityFrameworkCore;
 using Models.InternalModels.BaseEntityModels;
 using Models.UtilModels;
 
 namespace DataManager.BaseRepositories
 {
-    public abstract class BaseRepository<TEntity, TModel> : BaseRepository<TEntity, TModel, Guid, AnywayBankDbContext>
+    public abstract class BaseRepository<TEntity> : BaseRepository<TEntity, Guid, AnywayBankDbContext>
         where TEntity : class, IEntity<Guid>, new()
-        where TModel : class, IEntityModel<Guid>, new()
     {
         protected BaseRepository(AnywayBankDbContext context, IMapper mapper)
             : base(context, mapper)
@@ -23,84 +23,65 @@ namespace DataManager.BaseRepositories
         }
     }
 
-    public abstract class BaseRepository<TEntity, TModel, TKey, TDbContext> : IRepository<TEntity, TModel, TKey>
+    public abstract class BaseRepository<TEntity, TKey, TDbContext> : BaseUnitOfWork<TDbContext>,
+        IRepository<TEntity, TKey>
         where TEntity : class, IEntity<TKey>, new()
-        where TModel : class, IEntityModel<TKey>, new()
         where TKey : struct, IEquatable<TKey>
         where TDbContext : DbContext
     {
-        protected readonly TDbContext Context;
         protected readonly IMapper Mapper;
         protected readonly DbSet<TEntity> RepoDbSet;
 
         protected BaseRepository(TDbContext context, IMapper mapper)
+            : base(context)
         {
-            Context = context;
             Mapper = mapper;
             RepoDbSet = Context.Set<TEntity>();
         }
 
-        public virtual ResultModel<TModel> Create(TModel model)
+        public virtual ResultModel<TModel> Create<TModel>(TModel model, bool autoCommit = false)
+            where TModel : class, IEntityModel<TKey>, new()
         {
-            var result = new ResultModel<TModel>(true);
+            var alreadyCreated = Any<TModel>(_ => _.Id.Equals(model.Id));
+            if (alreadyCreated) return ResultModel<TModel>.BadResult(1001, "Entity already exists.");
 
-            var alreadyCreated = Any(_ => _.Id.Equals(model.Id));
-            if (!alreadyCreated)
-            {
-                var entity = Mapper.Map<TEntity>(model);
-                entity = RepoDbSet.Add(entity).Entity;
-                Mapper.Map(entity, model);
-                result.Data = model;
-            }
-            else
-            {
-                result.Success = false;
-                result.Error = new ErrorModel(1001, "Entity already exists.");
-            }
+            var entity = Mapper.Map<TEntity>(model);
+            entity = RepoDbSet.Add(entity).Entity;
+            Mapper.Map(entity, model);
 
-            return result;
+            if (autoCommit) Commit();
+            return ResultModel<TModel>.Ok(model);
         }
 
-        public virtual ResultModel<TModel> Update(TModel model)
+        public virtual ResultModel<TModel> Update<TModel>(TModel model, bool autoCommit = false)
+            where TModel : class, IEntityModel<TKey>, new()
         {
-            var result = new ResultModel<TModel>(true);
+            var entity = GetInternal<TModel>(_ => _.Id.Equals(model.Id));
+            if (!entity.Success) return ResultModel<TModel>.Copy(entity);
 
-            var entity = GetInternal(_ => _.Id.Equals(model.Id));
-            if (entity.Success)
-            {
-                Mapper.Map(model, entity.Data);
-                entity.Data = RepoDbSet.Update(entity.Data).Entity;
-                Mapper.Map(entity.Data, model);
-                result.Data = model;
-            }
-            else
-            {
-                result.Success = false;
-                result.Error = entity.Error;
-            }
+            Mapper.Map(model, entity.Data);
+            entity.Data = RepoDbSet.Update(entity.Data).Entity;
+            Mapper.Map(entity.Data, model);
 
-            return result;
+            if (autoCommit) Commit();
+            return ResultModel<TModel>.Ok(model);
         }
 
-        public virtual ResultModel<object> Remove(TModel model)
+        public virtual ResultModel<object> Remove<TModel>(TModel model, bool autoCommit = false)
+            where TModel : class, IEntityModel<TKey>, new()
         {
-            var result = new ResultModel<object>(true);
+            var entity = GetInternal<TModel>(_ => _.Id.Equals(model.Id));
+            if (!entity.Success) return ResultModel<object>.Copy(entity);
 
-            var entityToDelete = GetInternal(_ => _.Id.Equals(model.Id));
-            if (entityToDelete.Success)
-            {
-                RepoDbSet.Remove(entityToDelete.Data);
-            }
-            else
-            {
-                result.Success = false;
-                result.Error = entityToDelete.Error;
-            }
+            RepoDbSet.Remove(entity.Data);
 
-            return result;
+            if (autoCommit) Commit();
+            return ResultModel<object>.Ok(null);
         }
 
-        public virtual IEnumerable<TModel> GetAll(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true) =>
+        public virtual IEnumerable<TModel> GetAll<TModel>(Expression<Func<TModel, bool>> predicate,
+            bool asNoTracking = true)
+            where TModel : class, IEntityModel<TKey>, new() =>
             asNoTracking
                 ? QuerySet(predicate)
                     .AsNoTracking()
@@ -110,23 +91,21 @@ namespace DataManager.BaseRepositories
                     .ProjectTo<TModel>(Mapper.ConfigurationProvider)
                     .ToList();
 
-        public virtual ResultModel<TModel> Get(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true)
+        public virtual ResultModel<TModel> Get<TModel>(Expression<Func<TModel, bool>> predicate,
+            bool asNoTracking = true)
+            where TModel : class, IEntityModel<TKey>, new()
         {
             var entity = GetInternal(predicate);
-
-            return new ResultModel<TModel>(true)
-            {
-                Success = entity.Success,
-                Data = Mapper.Map<TModel>(entity.Data),
-                Error = entity.Error
-            };
+            return ResultModel<TModel>.Copy(entity);
         }
 
-        public virtual bool Any(Expression<Func<TModel, bool>> predicate) =>
+        public virtual bool Any<TModel>(Expression<Func<TModel, bool>> predicate)
+            where TModel : class, IEntityModel<TKey>, new() =>
             RepoDbSet.Any(MapPredicate(predicate));
 
-        public virtual async Task<IEnumerable<TModel>> GetAllAsync(Expression<Func<TModel, bool>> predicate,
-            bool asNoTracking = true) =>
+        public virtual async Task<IEnumerable<TModel>> GetAllAsync<TModel>(Expression<Func<TModel, bool>> predicate,
+            bool asNoTracking = true)
+            where TModel : class, IEntityModel<TKey>, new() =>
             asNoTracking
                 ? await QuerySet(predicate)
                     .AsNoTracking()
@@ -136,70 +115,52 @@ namespace DataManager.BaseRepositories
                     .ProjectTo<TModel>(Mapper.ConfigurationProvider)
                     .ToListAsync();
 
-        public virtual async Task<ResultModel<TModel>> GetAsync(Expression<Func<TModel, bool>> predicate,
+        public virtual async Task<ResultModel<TModel>> GetAsync<TModel>(Expression<Func<TModel, bool>> predicate,
             bool asNoTracking = true)
+            where TModel : class, IEntityModel<TKey>, new()
         {
             var entity = await GetInternalAsync(predicate);
-
-            return new ResultModel<TModel>(true)
-            {
-                Success = entity.Success,
-                Data = Mapper.Map<TModel>(entity.Data), 
-                Error = entity.Error
-            };
+            return ResultModel<TModel>.Copy(entity);
         }
 
-        public virtual async Task<bool> AnyAsync(Expression<Func<TModel, bool>> predicate) =>
+        public virtual async Task<bool> AnyAsync<TModel>(Expression<Func<TModel, bool>> predicate)
+            where TModel : class, IEntityModel<TKey>, new() =>
             await RepoDbSet.AnyAsync(MapPredicate(predicate));
 
-        protected virtual ResultModel<TEntity> GetInternal(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true)
+        protected virtual ResultModel<TEntity> GetInternal<TModel>(Expression<Func<TModel, bool>> predicate,
+            bool asNoTracking = true)
+            where TModel : class, IEntityModel<TKey>, new()
         {
-            var result = new ResultModel<TEntity>(true);
-
             var entity = asNoTracking
                 ? RepoDbSet.AsNoTracking().FirstOrDefault(MapPredicate(predicate))
                 : RepoDbSet.FirstOrDefault(MapPredicate(predicate));
 
-            if (entity != null)
-            {
-                result.Data = entity;
-            }
-            else
-            {
-                result.Success = false;
-                result.Error = new ErrorModel(1001, "Entity not found.");
-            }
-
-            return result;
+            return entity != null
+                ? ResultModel<TEntity>.Ok(entity)
+                : ResultModel<TEntity>.BadResult(1001, "Entity not found.");
         }
 
-        protected virtual async Task<ResultModel<TEntity>> GetInternalAsync(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true)
+        protected virtual async Task<ResultModel<TEntity>> GetInternalAsync<TModel>(
+            Expression<Func<TModel, bool>> predicate, bool asNoTracking = true)
+            where TModel : class, IEntityModel<TKey>, new()
         {
-            var result = new ResultModel<TEntity>(true);
-
             var entity = asNoTracking
                 ? await RepoDbSet.AsNoTracking().FirstOrDefaultAsync(MapPredicate(predicate))
                 : await RepoDbSet.FirstOrDefaultAsync(MapPredicate(predicate));
 
-            if (entity != null)
-            {
-                result.Data = entity;
-            }
-            else
-            {
-                result.Success = false;
-                result.Error = new ErrorModel(1001, "Entity not found.");
-            }
-
-            return result;
+            return entity != null
+                ? ResultModel<TEntity>.Ok(entity)
+                : ResultModel<TEntity>.BadResult(1001, "Entity not found.");
         }
 
-        private IQueryable<TEntity> QuerySet(Expression<Func<TModel, bool>> predicate = null) =>
+        private IQueryable<TEntity> QuerySet<TModel>(Expression<Func<TModel, bool>> predicate = null)
+            where TModel : class, IEntityModel<TKey>, new() =>
             predicate != null
                 ? RepoDbSet.Where(MapPredicate(predicate))
                 : RepoDbSet;
 
-        private Expression<Func<TEntity, bool>> MapPredicate(Expression<Func<TModel, bool>> predicate) =>
+        private Expression<Func<TEntity, bool>> MapPredicate<TModel>(Expression<Func<TModel, bool>> predicate)
+            where TModel : class, IEntityModel<TKey>, new() =>
             Mapper.Map<Expression<Func<TEntity, bool>>>(predicate);
     }
 }

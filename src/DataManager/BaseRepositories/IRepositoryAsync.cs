@@ -8,13 +8,15 @@ using Models.UtilModels;
 
 namespace DataManager.BaseRepositories
 {
-    public interface IRepositoryAsync<TEntity, TModel, TKey>
+    public interface IRepositoryAsync<TEntity, TKey>
         where TEntity : class, IEntity<TKey>, new()
-        where TModel : class, IEntityModel<TKey>, new()
         where TKey : struct, IEquatable<TKey>
     {
-        Task<IEnumerable<TModel>> GetAllAsync(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true);
-        Task<ResultModel<TModel>> GetAsync(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true);
-        Task<bool> AnyAsync(Expression<Func<TModel, bool>> predicate);
+        Task<IEnumerable<TModel>> GetAllAsync<TModel>(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true)
+            where TModel: class, IEntityModel<TKey>, new();
+        Task<ResultModel<TModel>> GetAsync<TModel>(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true)
+            where TModel : class, IEntityModel<TKey>, new();
+        Task<bool> AnyAsync<TModel>(Expression<Func<TModel, bool>> predicate)
+            where TModel : class, IEntityModel<TKey>, new();
     }
 }

@@ -5,13 +5,15 @@ using Models.UtilModels;
 
 namespace DataManager.BaseRepositories
 {
-    public interface IRepositoryCommon<TEntity, TModel, TKey>
+    public interface IRepositoryCommon<TEntity, TKey>
         where TEntity : class, IEntity<TKey>, new()
-        where TModel : class, IEntityModel<TKey>, new()
         where TKey : struct, IEquatable<TKey>
     {
-        ResultModel<TModel> Create(TModel model);
-        ResultModel<TModel> Update(TModel model);
-        ResultModel<object> Remove(TModel model);
+        ResultModel<TModel> Create<TModel>(TModel model, bool autoCommit = false) 
+            where TModel : class, IEntityModel<TKey>, new();
+        ResultModel<TModel> Update<TModel>(TModel model, bool autoCommit = false) 
+            where TModel : class, IEntityModel<TKey>, new();
+        ResultModel<object> Remove<TModel>(TModel model, bool autoCommit = false) 
+            where TModel : class, IEntityModel<TKey>, new();
     }
 }

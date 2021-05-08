@@ -1,70 +1,55 @@
 ﻿using System.Threading.Tasks;
-using AnywayBankCore.BaseServices;
 using AutoMapper;
-using DataManager.UnitsOfWork.AnywayBankUnitsOfWork;
+using DataManager.Repositories.PersonRepositories;
 using Models.APIModels.Identity;
 using Models.InternalModels.EntityModels.Identity;
 using Models.UtilModels;
 
 namespace AnywayBankCore.Services.Identity
 {
-    public class IdentityService : BaseService, IIdentityService
+    public class IdentityService : IIdentityService
     {
-        public IdentityService(IAnywayBankUnitOfWork unitOfWork, IMapper mapper)
-            : base(unitOfWork, mapper)
+        private readonly IMapper _mapper;
+        private readonly IPersonRepository _personRepository;
+
+        public IdentityService(IMapper mapper, IPersonRepository personRepository)
         {
+            _mapper = mapper;
+            _personRepository = personRepository;
         }
 
         public async Task<ResultModel<PersonModel>> RegisterAsync(RegistrationModel model)
         {
-            var result = new ResultModel<PersonModel>(true);
-
-            var usernameAlreadyExists = await UnitOfWork.UserRepository.AnyAsync(_ => _.Username == model.Username);
-            if (!usernameAlreadyExists)
-            {
-                result.Success = false;
-                result.Error = new ErrorModel(2002, "User with similar Username already exists.");
-                return result;
-            }
+            var result = await TryGetPerson(model.Username);
+            if (result.Success)
+                return ResultModel<PersonModel>.BadResult(2002, "User with similar Username already exists.");
 
             try
             {
-                await UnitOfWork.BeginTransactionAsync();
-                var user = UnitOfWork.UserRepository.Create(Mapper.Map<UserModel>(model));
-                var person = UnitOfWork.PersonRepository.Create(new PersonModel());
-                person.Data.User = user.Data;
-
-                person = UnitOfWork.PersonRepository.Update(person.Data);
-                result.Data = person.Data;
-                await UnitOfWork.CommitAsync();
+                await _personRepository.BeginTransactionAsync();
+                var user = _mapper.Map<UserModel>(model);
+                var person = new PersonModel(user);
+                var creationResult = _personRepository.Create(person);
+                await _personRepository.CommitAsync();
+                return creationResult;
             }
             catch
             {
-                result.Success = false;
-                result.Error = new ErrorModel(2002, "Registration failed.");
-                await UnitOfWork.RollbackAsync();
+                await _personRepository.RollbackAsync();
+                return ResultModel<PersonModel>.BadResult(2002, "Registration failed.");
             }
-
-            return result;
         }
 
         public async Task<ResultModel<PersonModel>> AuthorizeAsync(AuthorizationModel model)
         {
-            var result = new ResultModel<PersonModel>(true);
+            var person = await TryGetPerson(model.Username);
 
-            var userSearchResult = await UnitOfWork.UserRepository.GetAsync(_ => _.Username == model.Username &&
-                _.Password == model.Password);
-            if (userSearchResult.Success)
-            {
-                result.Data = Mapper.Map<PersonModel>(userSearchResult.Data.Person);
-            }
-            else
-            {
-                result.Success = false;
-                result.Error = userSearchResult.Error;
-            }
-
-            return result;
+            return person.Success && person.Data.User.Password == model.Password
+                ? person
+                : ResultModel<PersonModel>.BadResult(2002, "Authorization failed.");
         }
+
+        private async Task<ResultModel<PersonModel>> TryGetPerson(string username) =>
+            await _personRepository.GetAsync<PersonModel>(_ => _.User.Username == username);
     }
 }

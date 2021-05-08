@@ -7,13 +7,15 @@ using Models.UtilModels;
 
 namespace DataManager.BaseRepositories
 {
-    public interface IRepositorySync<TEntity, TModel, TKey>
+    public interface IRepositorySync<TEntity, TKey>
         where TEntity : class, IEntity<TKey>, new()
-        where TModel : class, IEntityModel<TKey>, new()
         where TKey : struct, IEquatable<TKey>
     {
-        IEnumerable<TModel> GetAll(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true);
-        ResultModel<TModel> Get(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true);
-        bool Any(Expression<Func<TModel, bool>> predicate);
+        IEnumerable<TModel> GetAll<TModel>(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true)
+            where TModel : class, IEntityModel<TKey>, new();
+        ResultModel<TModel> Get<TModel>(Expression<Func<TModel, bool>> predicate, bool asNoTracking = true)
+            where TModel : class, IEntityModel<TKey>, new();
+        bool Any<TModel>(Expression<Func<TModel, bool>> predicate)
+            where TModel : class, IEntityModel<TKey>, new();
     }
 }
