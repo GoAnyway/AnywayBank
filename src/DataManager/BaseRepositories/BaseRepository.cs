@@ -57,7 +57,7 @@ namespace DataManager.BaseRepositories
             where TModel : class, IEntityModel<TKey>, new()
         {
             var entity = GetInternal<TModel>(_ => _.Id.Equals(model.Id));
-            if (!entity.Success) return ResultModel<TModel>.Copy(entity);
+            if (!entity.Success) return ResultModel<TModel>.BadResult(entity);
 
             Mapper.Map(model, entity.Data);
             entity.Data = RepoDbSet.Update(entity.Data).Entity;
@@ -71,7 +71,7 @@ namespace DataManager.BaseRepositories
             where TModel : class, IEntityModel<TKey>, new()
         {
             var entity = GetInternal<TModel>(_ => _.Id.Equals(model.Id));
-            if (!entity.Success) return ResultModel<object>.Copy(entity);
+            if (!entity.Success) return ResultModel<object>.BadResult(entity);
 
             RepoDbSet.Remove(entity.Data);
 
@@ -96,7 +96,7 @@ namespace DataManager.BaseRepositories
             where TModel : class, IEntityModel<TKey>, new()
         {
             var entity = GetInternal(predicate);
-            return ResultModel<TModel>.Copy(entity);
+            return ResultModel<TModel>.Copy(entity, Mapper.Map<TModel>(entity.Data));
         }
 
         public virtual bool Any<TModel>(Expression<Func<TModel, bool>> predicate)
@@ -120,7 +120,7 @@ namespace DataManager.BaseRepositories
             where TModel : class, IEntityModel<TKey>, new()
         {
             var entity = await GetInternalAsync(predicate);
-            return ResultModel<TModel>.Copy(entity);
+            return ResultModel<TModel>.Copy(entity, Mapper.Map<TModel>(entity.Data));
         }
 
         public virtual async Task<bool> AnyAsync<TModel>(Expression<Func<TModel, bool>> predicate)
@@ -164,3 +164,6 @@ namespace DataManager.BaseRepositories
             Mapper.Map<Expression<Func<TEntity, bool>>>(predicate);
     }
 }
+
+
+
