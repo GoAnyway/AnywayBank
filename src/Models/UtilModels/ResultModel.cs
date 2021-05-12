@@ -37,7 +37,7 @@
             new ResultModel<TData>(false, new ErrorModel(code, message));
 
         public static ResultModel<TData> BadResult<T>(ResultModel<T> result) =>
-            new ResultModel<TData>(result.Success, result.Error);
+            new ResultModel<TData>(false, result.Error);
 
         public static ResultModel<TData> Copy<T>(ResultModel<T> result, TData data) =>
             new ResultModel<TData>(result.Success, result.Error, data);
