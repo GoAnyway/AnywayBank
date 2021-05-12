@@ -1,7 +1,7 @@
 ﻿using System;
-using Models.InternalModels.BaseEntityModels;
+using Data.Models.InternalModels.BaseEntityModels;
 
-namespace Models.InternalModels.EntityModels.Identity
+namespace Data.Models.InternalModels.EntityModels.Identity
 {
     public class UserModel : BaseEntityModel
     {
@@ -9,7 +9,5 @@ namespace Models.InternalModels.EntityModels.Identity
         public string Password { get; set; }
         public string Email { get; set; }
         public DateTime RegistrationTime { get; set; }
-
-        public PersonModel Person { get; set; }
     }
 }

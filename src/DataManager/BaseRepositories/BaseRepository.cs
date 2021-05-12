@@ -5,12 +5,12 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Data.Models.InternalModels.BaseEntityModels;
+using Data.Models.UtilModels;
 using Database.BaseEntities;
 using Database.DbContexts;
 using DataManager.BaseUnitsOfWork;
 using Microsoft.EntityFrameworkCore;
-using Models.InternalModels.BaseEntityModels;
-using Models.UtilModels;
 
 namespace DataManager.BaseRepositories
 {
@@ -164,6 +164,3 @@ namespace DataManager.BaseRepositories
             Mapper.Map<Expression<Func<TEntity, bool>>>(predicate);
     }
 }
-
-
-

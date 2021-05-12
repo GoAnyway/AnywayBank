@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Data.Models.InternalModels.EntityModels.Core;
 using Database.Entities.Core.Bank;
-using Models.InternalModels.EntityModels.Core;
 
 namespace AnywayBank.Utils.MapperProfiles
 {
@@ -10,17 +10,10 @@ namespace AnywayBank.Utils.MapperProfiles
         {
             CreateMap<BankProfile, BankProfileModel>()
                 .ForMember(_ => _.Id, opt => opt.MapFrom(s => s.Id))
-                .ForMember(_ => _.BankAccounts, opt => opt.MapFrom(s => s.BankAccounts))
-                .ForMember(_ => _.Person, opt => opt.MapFrom(s => s.Person));
+                .ForMember(_ => _.BankAccounts, opt => opt.MapFrom(s => s.BankAccounts));
             CreateMap<BankProfileModel, BankProfile>()
                 .ForMember(_ => _.Id, opt => opt.MapFrom(s => s.Id))
-                .ForMember(_ => _.BankAccounts, opt => opt.MapFrom(s => s.BankAccounts))
-                .ForMember(_ => _.PersonId, opt =>
-                {
-                    opt.Condition(s => s.Person != null);
-                    opt.MapFrom(s => s.Person.Id);
-                })
-                .ForMember(_ => _.Person, opt => opt.MapFrom(s => s.Person));
+                .ForMember(_ => _.BankAccounts, opt => opt.MapFrom(s => s.BankAccounts));
 
             CreateMap<BankAccount, BankAccountModel>()
                 .ForMember(_ => _.Id, opt => opt.MapFrom(s => s.Id))
@@ -29,8 +22,7 @@ namespace AnywayBank.Utils.MapperProfiles
                 .ForMember(_ => _.Balance, opt => opt.MapFrom(s => s.Balance))
                 .ForMember(_ => _.OverdraftLimit, opt => opt.MapFrom(s => s.OverdraftLimit))
                 .ForMember(_ => _.CreationTime, opt => opt.MapFrom(s => s.CreationTime))
-                .ForMember(_ => _.EndTime, opt => opt.MapFrom(s => s.EndTime))
-                .ForMember(_ => _.BankProfile, opt => opt.MapFrom(s => s.BankProfile));
+                .ForMember(_ => _.EndTime, opt => opt.MapFrom(s => s.EndTime));
             CreateMap<BankAccountModel, BankAccount>()
                 .ForMember(_ => _.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(_ => _.Type, opt => opt.MapFrom(s => s.Type))
@@ -38,13 +30,7 @@ namespace AnywayBank.Utils.MapperProfiles
                 .ForMember(_ => _.Balance, opt => opt.MapFrom(s => s.Balance))
                 .ForMember(_ => _.OverdraftLimit, opt => opt.MapFrom(s => s.OverdraftLimit))
                 .ForMember(_ => _.CreationTime, opt => opt.MapFrom(s => s.CreationTime))
-                .ForMember(_ => _.EndTime, opt => opt.MapFrom(s => s.EndTime))
-                .ForMember(_ => _.BankProfileId, opt =>
-                {
-                    opt.Condition(s => s.BankProfile != null);
-                    opt.MapFrom(s => s.BankProfile.Id);
-                })
-                .ForMember(_ => _.BankProfile, opt => opt.MapFrom(s => s.BankProfile));
+                .ForMember(_ => _.EndTime, opt => opt.MapFrom(s => s.EndTime));
         }
     }
 }

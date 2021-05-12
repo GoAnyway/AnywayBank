@@ -1,14 +1,13 @@
 ﻿using System;
-using Models.InternalModels.BaseEntityModels;
-using Models.InternalModels.EntityModels.Core;
+using Data.Models.InternalModels.BaseEntityModels;
+using Data.Models.InternalModels.EntityModels.Core;
 
-namespace Models.InternalModels.EntityModels.Identity
+namespace Data.Models.InternalModels.EntityModels.Identity
 {
     public class PersonModel : BaseEntityModel
     {
         public PersonModel()
         {
-            
         }
 
         public PersonModel(UserModel user)

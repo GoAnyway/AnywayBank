@@ -1,5 +1,6 @@
 using AnywayBank.Utils.Extensions.ApplicationBuilderExtensions;
 using AnywayBank.Utils.Extensions.ServiceCollectionExtensions;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +29,7 @@ namespace AnywayBank
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder appBuilder) =>
             appBuilder
-                .UseMiddlewares()
+                //.UseMiddlewares()
                 .UseRouting()
                 .UseEndpoints(_ => _.MapControllers());
     }

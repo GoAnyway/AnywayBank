@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Models.InternalModels.BaseEntityModels
+namespace Data.Models.InternalModels.BaseEntityModels
 {
     public abstract class BaseEntityModel : IEntityModel<Guid>
     {

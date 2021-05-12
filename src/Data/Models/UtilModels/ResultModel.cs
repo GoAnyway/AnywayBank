@@ -1,4 +1,4 @@
-﻿namespace Models.UtilModels
+﻿namespace Data.Models.UtilModels
 {
     public class ResultModel<TData>
     {
@@ -31,15 +31,15 @@
         public TData Data { get; set; }
 
         public static ResultModel<TData> Ok(TData data) =>
-            new ResultModel<TData>(true, data);
+            new(true, data);
 
         public static ResultModel<TData> BadResult(int code, string message) =>
-            new ResultModel<TData>(false, new ErrorModel(code, message));
+            new(false, new ErrorModel(code, message));
 
         public static ResultModel<TData> BadResult<T>(ResultModel<T> result) =>
-            new ResultModel<TData>(false, result.Error);
+            new(false, result.Error);
 
         public static ResultModel<TData> Copy<T>(ResultModel<T> result, TData data) =>
-            new ResultModel<TData>(result.Success, result.Error, data);
+            new(result.Success, result.Error, data);
     }
 }

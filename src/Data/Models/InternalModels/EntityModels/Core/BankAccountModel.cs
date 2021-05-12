@@ -1,8 +1,8 @@
 ﻿using System;
-using Models.InternalModels.BaseEntityModels;
-using Models.InternalModels.EntityModels.Core.Enums;
+using Data.Models.InternalModels.BaseEntityModels;
+using Data.Models.InternalModels.EntityModels.Core.Enums;
 
-namespace Models.InternalModels.EntityModels.Core
+namespace Data.Models.InternalModels.EntityModels.Core
 {
     public class BankAccountModel : BaseEntityModel
     {
@@ -12,7 +12,5 @@ namespace Models.InternalModels.EntityModels.Core
         public decimal OverdraftLimit { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime EndTime { get; set; }
-
-        public BankProfileModel BankProfile { get; set; }
     }
 }

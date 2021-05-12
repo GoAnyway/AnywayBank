@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
-using Models.InternalModels.BaseEntityModels;
-using Models.InternalModels.EntityModels.Identity;
+using Data.Models.InternalModels.BaseEntityModels;
 
-namespace Models.InternalModels.EntityModels.Core
+namespace Data.Models.InternalModels.EntityModels.Core
 {
     public class BankProfileModel : BaseEntityModel
     {
         public ICollection<BankAccountModel> BankAccounts { get; set; } = new List<BankAccountModel>();
-
-        public PersonModel Person { get; set; }
     }
 }

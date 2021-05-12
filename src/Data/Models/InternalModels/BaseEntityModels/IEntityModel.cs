@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Models.InternalModels.BaseEntityModels
+namespace Data.Models.InternalModels.BaseEntityModels
 {
     public interface IEntityModel<TKey>
         where TKey : struct, IEquatable<TKey>
