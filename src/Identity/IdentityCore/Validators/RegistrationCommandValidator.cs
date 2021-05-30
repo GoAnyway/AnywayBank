@@ -3,6 +3,7 @@ using Data.Models.EntityModels;
 using Database.Entities;
 using DataManager.Repositories;
 using FluentValidation;
+using Resources.IdentityCoreResources.Validators;
 
 namespace IdentityCore.Validators
 {
@@ -18,9 +19,13 @@ namespace IdentityCore.Validators
 
         private void InitializeValidationRules()
         {
+            RuleFor(_ => _.Password)
+                .Equal(_ => _.PasswordConfirmation)
+                .WithMessage(RegistrationCommandValidatorErrors.PasswordsMissmatch);
+
             RuleFor(_ => _.Username)
                 .Must(IsUsernameUnique)
-                .WithMessage("Person with same Username already exists!");
+                .WithMessage(RegistrationCommandValidatorErrors.UsernameNotUnique);
         }
 
         private bool IsUsernameUnique(string username) =>

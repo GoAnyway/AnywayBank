@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CommonData.UtilModels;
 using CommonData.UtilModels.ErrorModels;
+using CommonData.UtilModels.ErrorModels.Enums;
 using Data.Commands;
 using Data.Models.EntityModels;
 using Database.Entities;
 using DataManager.Repositories;
+using Resources.IdentityCoreResources.Handlers.RegistrationHandlers;
 
 namespace IdentityCore.Handlers.RegistrationHandlers
 {
@@ -29,7 +31,7 @@ namespace IdentityCore.Handlers.RegistrationHandlers
 
             await Task.CompletedTask;
             return creationResult.Match(_ => creationResult,
-                _ => BaseErrorModel.Create<DefaultErrorModel>(2002, "Registration failed."));
+                _ => BaseErrorModel.Create<DefaultErrorModel>(ErrorCode.BusinessLogic, RegistrationHandlerErrors.RegistrationFailed));
         }
     }
 }

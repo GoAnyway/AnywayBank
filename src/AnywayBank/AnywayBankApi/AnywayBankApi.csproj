@@ -26,6 +26,7 @@
 	  <ProjectReference Include="..\..\Common\CommonUtils\CommonUtils.csproj" />
 	  <ProjectReference Include="..\AnywayBankCore\AnywayBankCore.csproj" />
 	  <ProjectReference Include="..\Database\Database.csproj" />
+	  <ProjectReference Include="..\Resources\Resources.csproj" />
 	</ItemGroup>
 
 </Project>

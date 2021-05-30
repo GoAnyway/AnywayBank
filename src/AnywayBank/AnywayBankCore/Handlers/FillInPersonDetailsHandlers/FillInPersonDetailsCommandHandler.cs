@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CommonData.UtilModels;
 using CommonData.UtilModels.ErrorModels;
+using CommonData.UtilModels.ErrorModels.Enums;
 using Data.Commands.Account;
 using Data.Models.EntityModels.Core;
 using Database.Entities.Core;
 using DataManager.Repositories;
+using Resources.AnywayBankCoreResources.Handlers;
 
 namespace AnywayBankCore.Handlers.FillInPersonDetailsHandlers
 {
@@ -29,7 +31,7 @@ namespace AnywayBankCore.Handlers.FillInPersonDetailsHandlers
             {
                 _mapper.Map(request, person);
                 return _personRepository.Update(person, true);
-            }, _ => BaseErrorModel.Create<DefaultErrorModel>(2002, "Person with this UserID not found!"));
+            }, _ => BaseErrorModel.Create<DefaultErrorModel>(ErrorCode.BusinessLogic, FillInPersonDetailsCommandHandlerErrors.PersonNotFound));
         }
     }
 }

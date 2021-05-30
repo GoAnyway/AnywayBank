@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CommonData.BaseRequests;
 using CommonData.UtilModels;
 using CommonData.UtilModels.ErrorModels;
+using CommonData.UtilModels.ErrorModels.Enums;
 using FluentValidation;
 using MediatR;
 
@@ -36,7 +37,7 @@ namespace Core.BaseBehaviors.Validation
                 .ToList();
 
             return failures.Any()
-                ? BaseErrorModel.Create<TError>(3003, failures.Select(_ => _.ErrorMessage))
+                ? BaseErrorModel.Create<TError>(ErrorCode.Validation, failures.Select(_ => _.ErrorMessage))
                 : await next.Invoke();
         }
     }

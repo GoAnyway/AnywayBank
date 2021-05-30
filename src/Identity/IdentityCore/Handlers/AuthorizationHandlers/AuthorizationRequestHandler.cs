@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using CommonData.UtilModels;
 using CommonData.UtilModels.ErrorModels;
+using CommonData.UtilModels.ErrorModels.Enums;
 using Data.Models.EntityModels;
 using Data.Requests;
 using Database.Entities;
 using DataManager.Repositories;
+using Resources.IdentityCoreResources.Handlers.AuthorizationHandlers;
 
 namespace IdentityCore.Handlers.AuthorizationHandlers
 {
@@ -25,7 +27,7 @@ namespace IdentityCore.Handlers.AuthorizationHandlers
                                                                                  _.Password == request.Password);
 
             return getPersonResult.Match(_ => getPersonResult, 
-                _ => BaseErrorModel.Create<DefaultErrorModel>(2002, "Authorization failed."));
+                _ => BaseErrorModel.Create<DefaultErrorModel>(ErrorCode.BusinessLogic, AuthorizationHandlerErrors.AuthorizationFailed));
         }
     }
 }

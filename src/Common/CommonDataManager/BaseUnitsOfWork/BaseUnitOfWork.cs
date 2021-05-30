@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CommonResources.DataManagerResources.UnitsOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -70,7 +71,7 @@ namespace CommonDataManager.BaseUnitsOfWork
 
         private void ValidateCurrentTransaction()
         {
-            if (CurrentTransaction == null) throw new InvalidOperationException("Transaction has not been begun yet!");
+            if (CurrentTransaction == null) throw new InvalidOperationException(BaseUnitOfWorkErrors.TransactionNotBegun);
         }
     }
 }

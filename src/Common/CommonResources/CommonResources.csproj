@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="DataManagerResources\Repositories\BaseRepositoryErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BaseRepositoryErrors.resx</DependentUpon>
+    </Compile>
+    <Compile Update="DataManagerResources\UnitsOfWork\BaseUnitOfWorkErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BaseUnitOfWorkErrors.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="DataManagerResources\Repositories\BaseRepositoryErrors.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BaseRepositoryErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="DataManagerResources\UnitsOfWork\BaseUnitOfWorkErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>BaseUnitOfWorkErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

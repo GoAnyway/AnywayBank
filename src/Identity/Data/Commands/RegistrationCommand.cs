@@ -12,8 +12,6 @@ namespace Data.Commands
 
         [Required] public string Password { get; set; }
 
-        [Required]
-        [Compare(nameof(Password), ErrorMessage = "Passwords mismatch.")]
-        public string PasswordConfirmation { get; set; }
+        [Required] public string PasswordConfirmation { get; set; }
     }
 }

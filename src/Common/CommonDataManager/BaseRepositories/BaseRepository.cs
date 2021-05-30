@@ -8,8 +8,10 @@ using AutoMapper.QueryableExtensions;
 using CommonData.BaseEntityModels;
 using CommonData.UtilModels;
 using CommonData.UtilModels.ErrorModels;
+using CommonData.UtilModels.ErrorModels.Enums;
 using CommonDatabase.BaseEntities;
 using CommonDataManager.BaseUnitsOfWork;
+using CommonResources.DataManagerResources.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CommonDataManager.BaseRepositories
@@ -34,7 +36,7 @@ namespace CommonDataManager.BaseRepositories
             where TModel : BaseEntityModel, new()
         {
             var alreadyCreated = Any<TModel>(_ => _.Id.Equals(model.Id));
-            if (alreadyCreated) return BaseErrorModel.Create<TError>(1001, "Entity already exists.");
+            if (alreadyCreated) return BaseErrorModel.Create<TError>(ErrorCode.DataAccess, BaseRepositoryErrors.EntityAlreadyExists);
 
             var entity = Mapper.Map<TEntity>(model);
             entity = RepoDbSet.Add(entity).Entity;
@@ -111,9 +113,7 @@ namespace CommonDataManager.BaseRepositories
         {
             var entity = RepoDbSet.FirstOrDefault(MapPredicate(predicate));
 
-            return entity != null
-                ? entity
-                : BaseErrorModel.Create<TError>(1001, "Entity not found.");
+            return (OneOfModel<TEntity, TError>) entity ?? BaseErrorModel.Create<TError>(ErrorCode.DataAccess, BaseRepositoryErrors.EntityNotFound);
         }
 
         protected virtual async Task<OneOfModel<TEntity, TError>> GetInternalAsync<TModel>(
@@ -122,9 +122,7 @@ namespace CommonDataManager.BaseRepositories
         {
             var entity = await RepoDbSet.FirstOrDefaultAsync(MapPredicate(predicate));
 
-            return entity != null
-                ? entity
-                : BaseErrorModel.Create<TError>(1001, "Entity not found.");
+            return (OneOfModel<TEntity, TError>) entity ?? BaseErrorModel.Create<TError>(ErrorCode.DataAccess, BaseRepositoryErrors.EntityNotFound);
         }
 
         private IQueryable<TEntity> QuerySet<TModel>(Expression<Func<TModel, bool>> predicate = null)

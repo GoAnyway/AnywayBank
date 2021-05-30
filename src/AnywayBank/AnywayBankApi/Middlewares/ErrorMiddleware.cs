@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Resources.AnywayBankApiResources.Middlewares;
 
 namespace AnywayBankApi.Middlewares
 {
@@ -24,7 +25,7 @@ namespace AnywayBankApi.Middlewares
             }
             catch (Exception exception)
             {
-                context.Response.StatusCode = 500;
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 if (environment.IsDevelopment())
                 {
                     var error = new { exception.StackTrace, exception.Message };
@@ -33,7 +34,7 @@ namespace AnywayBankApi.Middlewares
                 }
                 else
                 {
-                    var error = new { Message = "Something went wrong." };
+                    var error = new { Message = ErrorMiddlewareErrors.UnexpectedError };
                     var result = new ObjectResult(error);
                     await result.ExecuteResultAsync(new ActionContext { HttpContext = context });
                 }

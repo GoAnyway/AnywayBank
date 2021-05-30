@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="IdentityApiResources\Middlewares\ErrorMiddlewareErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ErrorMiddlewareErrors.resx</DependentUpon>
+    </Compile>
+    <Compile Update="IdentityCoreResources\Handlers\AuthorizationHandlers\AuthorizationHandlerErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthorizationHandlerErrors.resx</DependentUpon>
+    </Compile>
+    <Compile Update="IdentityCoreResources\Handlers\RegistrationHandlers\RegistrationHandlerErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RegistrationHandlerErrors.resx</DependentUpon>
+    </Compile>
+    <Compile Update="IdentityCoreResources\Validators\RegistrationCommandValidatorErrors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RegistrationCommandValidatorErrors.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="IdentityApiResources\Middlewares\ErrorMiddlewareErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorMiddlewareErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="IdentityCoreResources\Handlers\AuthorizationHandlers\AuthorizationHandlerErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuthorizationHandlerErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="IdentityCoreResources\Handlers\RegistrationHandlers\RegistrationHandlerErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RegistrationHandlerErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="IdentityCoreResources\Validators\RegistrationCommandValidatorErrors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RegistrationCommandValidatorErrors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

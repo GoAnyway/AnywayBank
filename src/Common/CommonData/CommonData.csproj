@@ -9,4 +9,8 @@
     <PackageReference Include="OneOf" Version="3.0.186" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UtilModels\ErrorModels\Enums\" />
+  </ItemGroup>
+
 </Project>
