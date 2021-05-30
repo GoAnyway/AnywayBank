@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <EmbeddedResource Update="DataManagerResources\Repositories\BaseRepositoryErrors.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>BaseRepositoryErrors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="DataManagerResources\UnitsOfWork\BaseUnitOfWorkErrors.resx">

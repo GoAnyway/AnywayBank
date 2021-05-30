@@ -8,7 +8,7 @@ namespace Database.DbContexts
     {
         public AnywayBankDbContext(DbContextOptions<AnywayBankDbContext> options)
             : base(options) =>
-            Database.EnsureCreated();
+            Database.Migrate();
 
         public DbSet<Person> Persons { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }

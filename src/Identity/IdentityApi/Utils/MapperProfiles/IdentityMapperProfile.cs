@@ -3,6 +3,7 @@ using AutoMapper;
 using CommonData.Messages;
 using Data.Commands;
 using Data.Models.EntityModels;
+using Data.Requests;
 using Data.Responses;
 using Database.Entities;
 
@@ -16,12 +17,14 @@ namespace IdentityApi.Utils.MapperProfiles
                 .ForMember(_ => _.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(_ => _.Username, opt => opt.MapFrom(s => s.Username))
                 .ForMember(_ => _.Password, opt => opt.MapFrom(s => s.Password))
+                .ForMember(_ => _.PasswordSecret, opt => opt.MapFrom(s => s.PasswordSecret))
                 .ForMember(_ => _.Email, opt => opt.MapFrom(s => s.Email))
                 .ForMember(_ => _.RegistrationTime, opt => opt.MapFrom(s => s.RegistrationTime));
             CreateMap<UserModel, User>()
                 .ForMember(_ => _.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(_ => _.Username, opt => opt.MapFrom(s => s.Username))
                 .ForMember(_ => _.Password, opt => opt.MapFrom(s => s.Password))
+                .ForMember(_ => _.PasswordSecret, opt => opt.MapFrom(s => s.PasswordSecret))
                 .ForMember(_ => _.Email, opt => opt.MapFrom(s => s.Email))
                 .ForMember(_ => _.RegistrationTime, opt => opt.MapFrom(s => s.RegistrationTime));
 
@@ -30,6 +33,10 @@ namespace IdentityApi.Utils.MapperProfiles
                 .ForMember(_ => _.Password, opt => opt.MapFrom(s => s.Password))
                 .ForMember(_ => _.Email, opt => opt.MapFrom(s => s.Email))
                 .ForMember(_ => _.RegistrationTime, opt => opt.MapFrom(s => DateTime.UtcNow));
+
+            CreateMap<AuthorizationRequest, UserModel>()
+                .ForMember(_ => _.Username, opt => opt.MapFrom(s => s.Username))
+                .ForMember(_ => _.Password, opt => opt.MapFrom(s => s.Password));
 
             CreateMap<UserModel, UserRegisteredMessage>()
                 .ForMember(_ => _.UserId, opt => opt.MapFrom(s => s.Id));

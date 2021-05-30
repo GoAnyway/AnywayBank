@@ -80,9 +80,9 @@ namespace CommonDataManager.BaseRepositories
             where TModel : BaseEntityModel, new()
         {
             var getEntityResult = GetInternal(predicate);
-            return getEntityResult.IsT0
-                ? Mapper.Map<TModel>(getEntityResult.AsT0)
-                : getEntityResult.AsT1;
+            return getEntityResult.Match<OneOfModel<TModel, TError>>(
+                entity => Mapper.Map<TModel>(entity),
+                error => error);
         }
 
         public virtual bool Any<TModel>(Expression<Func<TModel, bool>> predicate)
@@ -99,9 +99,9 @@ namespace CommonDataManager.BaseRepositories
             where TModel : BaseEntityModel, new()
         {
             var getEntityResult = await GetInternalAsync(predicate);
-            return getEntityResult.IsT0
-                ? Mapper.Map<TModel>(getEntityResult.AsT0)
-                : getEntityResult.AsT1;
+            return getEntityResult.Match<OneOfModel<TModel, TError>>(
+                entity => Mapper.Map<TModel>(entity), 
+                error => error);
         }
 
         public virtual async Task<bool> AnyAsync<TModel>(Expression<Func<TModel, bool>> predicate)
@@ -113,7 +113,9 @@ namespace CommonDataManager.BaseRepositories
         {
             var entity = RepoDbSet.FirstOrDefault(MapPredicate(predicate));
 
-            return (OneOfModel<TEntity, TError>) entity ?? BaseErrorModel.Create<TError>(ErrorCode.DataAccess, BaseRepositoryErrors.EntityNotFound);
+            return entity != null
+                ? entity
+                : BaseErrorModel.Create<TError>(ErrorCode.DataAccess, BaseRepositoryErrors.EntityNotFound);
         }
 
         protected virtual async Task<OneOfModel<TEntity, TError>> GetInternalAsync<TModel>(
@@ -122,7 +124,9 @@ namespace CommonDataManager.BaseRepositories
         {
             var entity = await RepoDbSet.FirstOrDefaultAsync(MapPredicate(predicate));
 
-            return (OneOfModel<TEntity, TError>) entity ?? BaseErrorModel.Create<TError>(ErrorCode.DataAccess, BaseRepositoryErrors.EntityNotFound);
+            return entity != null 
+                ? entity 
+                : BaseErrorModel.Create<TError>(ErrorCode.DataAccess, BaseRepositoryErrors.EntityNotFound);
         }
 
         private IQueryable<TEntity> QuerySet<TModel>(Expression<Func<TModel, bool>> predicate = null)

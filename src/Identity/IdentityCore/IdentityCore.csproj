@@ -12,4 +12,9 @@
     <ProjectReference Include="..\Resources\Resources.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\UserSecurity\UserSecurityGuards\" />
+    <Folder Include="Services\UserSecurity\PasswordHashers\" />
+  </ItemGroup>
+
 </Project>
