@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Data.Models.InternalModels.BaseEntityModels
+namespace CommonData.BaseEntityModels
 {
     public abstract class BaseEntityModel
     {

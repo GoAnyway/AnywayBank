@@ -1,0 +1,38 @@
+version: "3.4"
+
+services:
+  identity_db:
+    image: ${DOCKER_REGISTRY-}mcr.microsoft.com/mssql/server
+    container_name: identity_db
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: PassIdentity123  
+      
+  anywaybank_db:
+    image: ${DOCKER_REGISTRY-}mcr.microsoft.com/mssql/server
+    container_name: anywaybank_db
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: PassAnywayBank123 
+
+  rabbitmq:
+    image: ${DOCKER_REGISTRY-}masstransit/rabbitmq
+    container_name: rabbitmq
+
+  identity:
+    image: ${DOCKER_REGISTRY-}identity_api
+    build:
+      context: .
+      dockerfile: Identity/IdentityApi/Dockerfile
+    # Only for Postman.
+    ports:
+      - 5000:80
+
+  anywaybank:
+    image: ${DOCKER_REGISTRY-}anywaybank_api
+    build:
+      context: .
+      dockerfile: AnywayBank/AnywayBankApi/Dockerfile
+    # Only for Postman.
+    ports:
+      - 5001:80
